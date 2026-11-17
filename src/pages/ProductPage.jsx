@@ -45,6 +45,7 @@ function ProductDetail({ slug }) {
   const o = site?.options || {}
   const [tab, setTab] = useState('description')
   const [img, setImg] = useState(0)
+  const [brokenSrc, setBrokenSrc] = useState('')
   const [qty, setQty] = useState(1)
   const [chosen, setChosen] = useState({})
   const [recent] = useState(readRecent)
@@ -91,7 +92,9 @@ function ProductDetail({ slug }) {
   const onSale = Number(prices.regular_price) > Number(prices.price)
   const name = stripHtml(p.name)
   // No photo in WordPress yet? Show a demo photo so the page still looks finished
-  const images = p.images || []
+  const images = (p.images || []).filter(im => im.src || im.thumbnail)
+  // Some products return an empty full-size src but still have a thumbnail, so fall back to it
+  const mainSrc = images[img]?.src || images[img]?.thumbnail
   const variationAttrs = (p.attributes || []).filter(a => a.has_variations)
   const specAttrs = (p.attributes || []).filter(a => !a.has_variations)
   const reviewCount = p.review_count || 0
@@ -140,8 +143,8 @@ function ProductDetail({ slug }) {
               </div>
             )}
             <div className="relative order-1 lg:order-2">
-              {images[img] ? (
-                <img src={images[img].src} alt={images[img].alt || name} className="aspect-[4/5] w-full rounded-sm object-cover" />
+              {mainSrc && mainSrc !== brokenSrc ? (
+                <img src={mainSrc} alt={images[img]?.alt || name} onError={() => setBrokenSrc(mainSrc)} className="aspect-[4/5] w-full rounded-sm object-cover" />
               ) : (
                 <div className="ph t1 aspect-[4/5]"><span className="ph-l">{name}</span></div>
               )}
@@ -199,7 +202,7 @@ function ProductDetail({ slug }) {
                 <button onClick={() => setQty(q => q + 1)} aria-label="Increase quantity">+</button>
               </div>
               <button className={`btn btn-primary btn-lg flex-1 ${add.isPending ? 'is-loading' : ''}`} disabled={!available || add.isPending} onClick={addToCart}>
-                {add.isPending ? 'Adding' : added ? 'Added' : !showFrom ? `Add to cart · ${formatPrice(unit * qty, prices)}` : 'Add to cart'}
+                {!available ? 'Sold out' : add.isPending ? 'Adding' : added ? 'Added' : !showFrom ?`Add to cart · ${formatPrice(unit * qty, prices)}` : 'Add to cart'}
               </button>
               <button
                 className="icon-btn border border-border-strong"

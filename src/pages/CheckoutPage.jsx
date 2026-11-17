@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, Navigate, useNavigate } from 'react-router'
 import CheckoutLayout from '../components/layout/CheckoutLayout.jsx'
 import EmptyState from '../components/ui/EmptyState.jsx'
 import Field from '../components/ui/Field.jsx'
@@ -39,7 +39,7 @@ function validate(f) {
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, loggedIn, loading: authLoading } = useAuth()
   const { data: cart, isLoading } = useCart()
   const { setCustomer, selectRate, checkout } = useCartActions()
   const [form, setForm] = useState(EMPTY)
@@ -66,7 +66,9 @@ export default function CheckoutPage() {
     if (Object.keys(validate(form)).length === 0) setCustomer.mutate({ billing: addr(), shipping: addr() })
   }
 
-  if (isLoading) return <CheckoutLayout><section className={`${WRAP} py-12`}><div className="sk h-64" /></section></CheckoutLayout>
+  // Checkout needs an account: send guests to log in, then bring them back here
+  if (!authLoading && !loggedIn) return <Navigate to="/login" state={{ from: '/checkout' }} replace />
+  if (isLoading || authLoading) return <CheckoutLayout><section className={`${WRAP} py-12`}><div className="sk h-64" /></section></CheckoutLayout>
   if (!cart?.items?.length) {
     return (
       <CheckoutLayout>

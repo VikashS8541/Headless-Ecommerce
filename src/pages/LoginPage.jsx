@@ -9,7 +9,8 @@ import { errorMessage } from '../api/errors.js'
 export default function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
-  const from = useLocation().state?.from || '/account'
+  const state = useLocation().state
+  const from = state?.from || '/account'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -36,7 +37,7 @@ export default function LoginPage() {
           <Link className="text-sm leading-[22px]" to="/forgot-password">Forgot password?</Link>
         </div>
         <button className={`btn btn-primary btn-block ${login.isPending ? 'is-loading' : ''}`} disabled={login.isPending}>{login.isPending ? 'Logging in' : 'Log in'}</button>
-        <p className="text-center text-sm leading-[22px] text-ink-muted">New to Aurelo? <Link to="/register">Create an account</Link></p>
+        <p className="text-center text-sm leading-[22px] text-ink-muted">New to Aurelo? <Link to="/register" state={state}>Create an account</Link></p>
       </form>
     </AuthLayout>
   )

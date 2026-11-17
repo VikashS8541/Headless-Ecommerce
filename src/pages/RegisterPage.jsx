@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import AuthLayout from '../components/layout/AuthLayout.jsx'
 import Logo from '../components/Logo.jsx'
 import Field from '../components/ui/Field.jsx'
@@ -9,6 +9,7 @@ import { errorMessage } from '../api/errors.js'
 export default function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
+  const state = useLocation().state
   const [f, setF] = useState({ name: '', email: '', password: '', confirm: '', terms: false })
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
@@ -26,7 +27,7 @@ export default function RegisterPage() {
     setServerError('')
     if (Object.keys(v).length) return
     register.mutate({ name: f.name.trim(), email: f.email.trim(), password: f.password }, {
-      onSuccess: () => navigate('/account', { replace: true }),
+      onSuccess: () => navigate(state?.from || '/account', { replace: true }),
       onError: err => setServerError(errorMessage(err)),
     })
   }
@@ -49,7 +50,7 @@ export default function RegisterPage() {
           {errors.terms && <span className="msg err mt-2" role="alert">{errors.terms}</span>}
         </div>
         <button className={`btn btn-primary btn-block ${register.isPending ? 'is-loading' : ''}`} disabled={register.isPending}>{register.isPending ? 'Creating account' : 'Create account'}</button>
-        <p className="text-center text-sm leading-[22px] text-ink-muted">Already a member? <Link to="/login">Log in</Link></p>
+        <p className="text-center text-sm leading-[22px] text-ink-muted">Already a member? <Link to="/login" state={state}>Log in</Link></p>
       </form>
     </AuthLayout>
   )
