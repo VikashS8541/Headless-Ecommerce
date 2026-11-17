@@ -1,0 +1,3 @@
+/* Preflight is off so the Aurelo base styles in components.css stay untouched. */
+*, ::before, ::after { border-width: 0; border-style: solid; border-color: var(--border); }
+@tailwind utilities;

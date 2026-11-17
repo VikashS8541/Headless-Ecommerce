@@ -1,0 +1,83 @@
+/* Aurelo design tokens. Edit values here only. */
+:root,[data-theme="light"]{
+  --surface: #ffffff; /* Default page and card ground. Text on it: `ink`, `ink-muted`. */
+  --surface-warm: #f7f6f2; /* Alternate section ground, hero, summary panels, hover fill. Text: `ink`, `ink-muted`. */
+  --surface-beige: #e9e3d8; /* Promo bands, disabled fills, image placeholders. Text: `ink`, `ink-muted`. Not for control borders. */
+  --surface-inverse: #202522; /* Announcement bar and footer ground. Text: `ink-inverse`. */
+  --ink: #252525; /* Primary text on `surface`, `surface-warm`, `surface-beige`, `accent-soft`. */
+  --ink-muted: #5f615c; /* Secondary text, captions, placeholders. Refined from #777777 so it reaches 4.5:1 on every light ground. */
+  --ink-inverse: #f7f6f2; /* Text on `surface-inverse`. */
+  --border: #e8e8e5; /* Decorative hairlines: cards, dividers, table rows. Not for form-control edges. */
+  --border-strong: #8c8d87; /* Form-control and checkbox edges (3:1 on `surface` and `surface-warm`). */
+  --brand: #202522; /* Deep Charcoal. Primary button fill, selected states, filled badges. Pairs with `on-brand`. */
+  --on-brand: #ffffff; /* Text and icons on `brand`. */
+  --accent: #78836a; /* Muted Olive for fills and graphics only (about 4:1 on white): progress bars, swatch blocks, logo leaf. Never body text. */
+  --accent-strong: #5f6b52; /* Olive for text, links, icons and hover fills. 5.7:1 on `surface`. Pairs with `on-accent-strong`. */
+  --on-accent-strong: #ffffff; /* Text on `accent-strong`. */
+  --accent-soft: #eef0e8; /* Soft olive tint for icon rings, low-stock badge, selected rows. */
+  --success: #32845a; /* Success text, icons and borders on `surface`. Always with a word or check icon. */
+  --success-soft: #e4f1ea; /* Success banner and 'Delivered' pill ground; text on it is `ink`. */
+  --error: #c23b37; /* Errors, sale price, sale badge fill (white text). Refined from #D9534F, which fails 4.5:1 on white. */
+  --error-soft: #fbeae9; /* Invalid-field and error-banner ground; text on it is `ink`. */
+  --focus: var(--brand); /* Focus ring: 2px solid, 2px offset. 3:1 or better on every surface in both themes. */
+  --overlay: rgba(32,37,34,0.48); /* Scrim behind drawers, modals and the search overlay. */
+  --shadow-sm: 0 1px 2px rgba(32,37,34,0.08); /* Wishlist button over imagery, inputs on hover. */
+  --shadow-md: 0 8px 24px rgba(32,37,34,0.10); /* Mega menu, dropdown, toast. */
+  --shadow-lg: 0 24px 56px rgba(32,37,34,0.18); /* Cart drawer, filter drawer, modal. */
+}
+[data-theme="dark"]{
+  --surface: #151815;
+  --surface-warm: #1c201c;
+  --surface-beige: #2a2b25;
+  --surface-inverse: #0b0d0b;
+  --ink: #f1f0ea;
+  --ink-muted: #aaada4;
+  --ink-inverse: #f1f0ea;
+  --border: #30342f;
+  --border-strong: #7a7d75;
+  --brand: #f1f0ea;
+  --on-brand: #151815;
+  --accent: #8d9a7e;
+  --accent-strong: #aebba0;
+  --on-accent-strong: #151815;
+  --accent-soft: #232820;
+  --success: #62c295;
+  --success-soft: #1b2e24;
+  --error: #f0908c;
+  --error-soft: #3a1f1e;
+  --focus: var(--brand);
+  --overlay: rgba(0,0,0,0.64);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-lg: 0 24px 56px rgba(0,0,0,0.6);
+}
+:root{
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --container: 1320px;
+  --gutter-desktop: 32px;
+  --gutter-tablet: 24px;
+  --gutter-mobile: 16px;
+  --header-height: 76px;
+  --announce-height: 40px;
+  --z-header: 40;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --font-heading: "DM Sans", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-editorial: "Playfair Display", Georgia, serif;
+}
