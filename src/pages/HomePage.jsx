@@ -51,7 +51,7 @@ function ProductSection({ overline, title, linkLabel, params, warm }) {
 }
 
 export default function HomePage() {
-  const { data: site } = useSite()
+  const { data: site, isPending: sitePending } = useSite()
   const o = site?.options || {}
   const { data: cats } = useCategories()
   const { data: testimonials } = useTestimonials()
@@ -71,6 +71,9 @@ export default function HomePage() {
 
   return (
     <Layout>
+      {/* Placeholder with the hero's size while the site options load, so the page does not jump */}
+      {sitePending && <section className="min-h-[640px] bg-surface-warm" aria-hidden="true" />}
+
       {/* Hero: Aurelo Content > Home: hero */}
       {hasHero && (
         <section className={`grid min-h-[640px] grid-cols-1 bg-surface-warm ${hasHeroText && o.hero_image ? 'lg:grid-cols-2' : ''}`}>

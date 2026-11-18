@@ -2,24 +2,34 @@ import { useMutation, useQuery, useQueryClient, keepPreviousData } from '@tansta
 import * as wp from './wordpress.js'
 import * as cartApi from './cart.js'
 import * as account from './account.js'
+import { readCache, remember } from './persist.js'
 
 // React Query caches every answer so a page does not re-download what it already has.
 
 /* ---------- Content from WordPress ---------- */
-export const useSite = () => useQuery({ queryKey: ['site'], queryFn: wp.fetchSite, staleTime: 60_000 })
+// The last saved answer is shown at once (initialData); initialDataUpdatedAt: 0 marks it stale so fresh data still loads.
+const saved = key => ({ initialData: readCache(key), initialDataUpdatedAt: 0 })
+
+export const queries = {
+  site: { queryKey: ['site'], queryFn: remember('site', wp.fetchSite), staleTime: 60_000 },
+  categories: { queryKey: ['categories'], queryFn: remember('categories', wp.fetchCategories), staleTime: 300_000 },
+  testimonials: { queryKey: ['testimonials'], queryFn: remember('testimonials', wp.fetchTestimonials) },
+}
+
+export const useSite = () => useQuery({ ...queries.site, ...saved('site') })
 
 export const useProducts = (params = {}, options = {}) =>
   useQuery({ queryKey: ['products', params], queryFn: () => wp.fetchProducts(params), placeholderData: keepPreviousData, ...options })
 
 export const useProduct = slug => useQuery({ queryKey: ['product', slug], queryFn: () => wp.fetchProduct(slug), enabled: !!slug })
 
-export const useCategories = () => useQuery({ queryKey: ['categories'], queryFn: wp.fetchCategories, staleTime: 300_000 })
+export const useCategories = () => useQuery({ ...queries.categories, ...saved('categories') })
 
 export const usePage = slug => useQuery({ queryKey: ['page', slug], queryFn: () => wp.fetchPage(slug), enabled: !!slug })
 
 export const useFaqs = () => useQuery({ queryKey: ['faqs'], queryFn: wp.fetchFaqs })
 
-export const useTestimonials = () => useQuery({ queryKey: ['testimonials'], queryFn: wp.fetchTestimonials })
+export const useTestimonials = () => useQuery({ ...queries.testimonials, ...saved('testimonials') })
 
 export const useReviews = productId => useQuery({ queryKey: ['reviews', productId], queryFn: () => wp.fetchReviews(productId), enabled: !!productId })
 
